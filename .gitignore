@@ -2,6 +2,6 @@
 instance
 .env
 .DS_Store
-.gitignore
+.git
 .idea
 static/.DS_Store

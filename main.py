@@ -10,6 +10,7 @@ from sqlalchemy import func, case
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+from pytz import timezone
 
 load_dotenv()
 
@@ -31,7 +32,7 @@ class RSVP(db.Model):
     attending_engagement: Mapped[bool] = mapped_column(Boolean, nullable=False)
     attending_pre_wedding: Mapped[bool] = mapped_column(Boolean, nullable=False)
     attending_wedding: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    submitted_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone('Asia/Kolkata')))
 
 with app.app_context():
     db.create_all()
