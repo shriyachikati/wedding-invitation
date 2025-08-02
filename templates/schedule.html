@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="text-center max-w-3xl mx-auto">
+  <h1 style="font-size:50px; font-family:leJourScript; color:#d6ae72; margin:auto;">Schedules</h1>
+</section>
+
+<!-- Grid wrapper: 1 col by default, 3 cols ≥ lg -->
+<section class="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+  <!-- 1️⃣ Engagement -->
+  <div class="space-y-4 text-center">
+    <p>
+      <a style="font-family: Garamond, serif; font-size:40px; letter-spacing:0.22rem; font-variant:small-caps; color:#b48b58">engagement</a>
+      <br>
+      <a style="font-family: texGyrePagella; font-size:18px; letter-spacing:0.22rem; font-style:italic; font-variant:small-caps; color:#765830">12 OCTOBER, 2025</a>
+      <br>
+      <a style="font-family: Garamond, serif; font-size:15px; font-style:italic; color:#765830">Sunday</a>
+      <br>
+    </p>
+    <img
+    src="../static/timelines/engagement_timeline.png"
+    alt="Engagement Party Schedule"
+  >
+  </div>
+
+  <!-- 2️⃣ Pre-Wedding -->
+  <div class="space-y-4 text-center">
+    <p>
+      <a style="font-family: Garamond, serif; font-size:40px; letter-spacing:0.22rem; font-variant:small-caps; color:#b48b58">pre-wedding</a>
+      <br>
+      <a style="font-family: texGyrePagella; font-size:18px; letter-spacing:0.22rem; font-style:italic; font-variant:small-caps; color:#765830">12 NOVEMBER, 2025</a>
+      <br>
+      <a style="font-family: Garamond, serif; font-size:15px; font-style:italic; color:#765830">Wednesday</a>
+      <br>
+    </p>
+    <img
+    src="../static/timelines/pre-wedding_timeline.png"
+    alt="Wedding Day Schedule"
+  >
+  </div>
+
+  <!-- 3️⃣ Wedding -->
+  <div class="space-y-4 text-center">
+    <p>
+      <a style="font-family: Garamond, serif; font-size:40px; letter-spacing:0.22rem; font-variant:small-caps; color:#b48b58">wedding</a>
+      <br>
+      <a style="font-family: texGyrePagella; font-size:18px; letter-spacing:0.22rem; font-style:italic; font-variant:small-caps; color:#765830">13 NOVEMBER, 2025</a>
+      <br>
+      <a style="font-family: Garamond, serif; font-size:15px; font-style:italic; color:#765830">Thursday</a>
+      <br>
+    </p>
+  <img
+    src="../static/timelines/wedding_timeline.png"
+    alt="Wedding Day Schedule"
+  >
+    </div>
+
+</section>
+
+{% endblock %}

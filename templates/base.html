@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title or "Our Wedding • 18 July 2026" }}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Tailwind CDN for a clean, modern look -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Libre+Baskerville&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&display=swap"
+  rel="stylesheet">
+  <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body class="font-sans tracking-wide text-gray-800 bg-white flex flex-col min-h-screen">
+  <!-- Top-bar navigation -->
+  <header class="bg-[#b48b58]">
+    <nav class="container mx-auto flex items-center justify-between py-4 px-6 text-white">
+      <a href="{{ url_for('index') }}" class="text-lg font-semibold"><img src="../static/marriage.png" style="height:50%;width:50%;"></a>
+      <div class="space-x-6 text-md">
+        <a href="{{ url_for('venue') }}" style="font-family: Garamond, serif; font-size:27px; letter-spacing:0.22rem; font-variant:small-caps;">the venues</a>
+        <a href="{{ url_for('schedule') }}" style="font-family: Garamond, serif; font-size:27px; letter-spacing:0.22rem; font-variant:small-caps;">schedules</a>
+        <a href="{{ url_for('rsvp') }}" style="font-family: Garamond, serif; font-size:27px; letter-spacing:0.22rem; font-variant:small-caps;">rsvp</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main page content -->
+  <main class="flex-grow">
+    <div class="container mx-auto py-12 px-6">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+

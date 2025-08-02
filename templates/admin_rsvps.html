@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="text-center max-w-3xl mx-auto">
+  <h1 style="font-size:50px; font-family:leJourScript; color:#d6ae72; margin:auto;">Guest List</h1>
+</section>
+
+<br>
+<br>
+
+<div class="overflow-x-auto">
+  <table class="min-w-full text-center bg-[#fff9f3]
+       border border-[#b48b58]/60 rounded-lg overflow-hidden">
+    <thead class="bg-[#b48b58] text-white">
+      <tr>
+        <th class="py-2 px-4">First Name</th>
+        <th class="py-2 px-4">Last Name</th>
+        <th class="py-2 px-4">Engagement</th>
+        <th class="py-2 px-4">Pre-Wedding</th>
+        <th class="py-2 px-4">Wedding</th>
+        <th class="py-2 px-4">Time</th>
+      </tr>
+    </thead>
+
+    <tbody style="color:#b48b58">
+      {% for r in rows %}
+        <tr class="even:bg-[#ffff]">
+          <td class="py-2 px-3">{{ r.first_name }}</td>
+          <td class="py-2 px-3">{{ r.last_name }}</td>
+
+          <td class="py-2">{{ "✔️" if r.attending_engagement   else "—" }}</td>
+          <td class="py-2">{{ "✔️" if r.attending_pre_wedding  else "—" }}</td>
+          <td class="py-2">{{ "✔️" if r.attending_wedding  else "—" }}</td>
+
+          <td class="py-2 text-sm">
+            {{ r.submitted_at.strftime("%Y-%m-%d %H:%M") }}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="py-6">No RSVPs yet.</td></tr>
+      {% endfor %}
+    </tbody>
+
+    <!-- NEW summary row -->
+  <tfoot class="bg-[#765830] text-white">
+    <tr>
+      <td class="py-3 px-3" colspan="2">Total</td>
+      <td class="py-3">{{ totals.attending_engagement   }}</td>
+      <td class="py-3">{{ totals.attending_pre_wedding }}</td>
+      <td class="py-3">{{ totals.attending_wedding }}</td>
+      <td></td>
+    </tr>
+  </tfoot>
+
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+.venv
+instance
+.env
+.DS_Store
+.gitignore
+.idea
+static/.DS_Store

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: '#b48b58',
+          brandLight: '#d6ae72',
+          brandDark: '#765830'
+        },
+        fontFamily: {
+          garamond: ['"Garamond"', 'normal'],
+          script:    ['"leJourScript"', 'cursive'],
+          textGyrePagella:    ['"textGyrePagella"', 'cursive'],
+        },
+        letterSpacing: {
+          extraWide: '.22rem',
+        },
+      }
+    }
+  }
+</script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+<section class="max-w-lg mx-auto text-center text-brand">
+
+  <!-- heading -->
+<section class="text-center max-w-3xl mx-auto">
+  <h1 style="font-size:50px; font-family:leJourScript; color:#d6ae72; margin:auto;">RSVP</h1>
+</section>
+
+  <!-- form -->
+  <form method="post" class="space-y-8 text-left">
+    {{ form.hidden_tag() }}
+
+    <!-- field macro keeps things DRY -->
+    {% macro text_field(field) %}
+      <div>
+        {{ field.label(class="block mb-1 font-garamond text-lg text-brand tracking-extraWide") }}
+        {{ field(
+              class="w-full p-2 rounded border border-brand
+                     focus:border-brand focus:ring-brand focus:ring-1
+                     outline-none"
+        ) }}
+        {% for err in field.errors %}
+          <span class="text-red-600 text-sm">{{ err }}</span>
+        {% endfor %}
+      </div>
+    {% endmacro %}
+
+    {{ text_field(form.first_name) }}
+    {{ text_field(form.last_name) }}
+
+    <!-- radio group macro -->
+    {% macro radio_group(group) %}
+      <div>
+        {{ group.label(class="block mb-3 radio-cursive text-lg text-brandDark") }}
+        <div class="flex flex-wrap gap-6">
+          {% for sub in group %}
+            <label class="inline-flex items-center space-x-2 cursor-pointer radio-cursive text-brandDark">
+              {{ sub(class="sr-only peer appearance-none") }}
+              <span
+                class="h-4 w-4 rounded-full border-2 border-brandDark
+                       flex items-center justify-center
+                       after:content-[''] after:h-2 after:w-2 after:rounded-full
+                       after:scale-0 peer-checked:after:scale-100
+                       after:bg-brandDark after:transition-transform"
+              ></span>
+              <span class="tracking-wide">{{ sub.label.text }}</span>
+            </label>
+          {% endfor %}
+        </div>
+        {% for err in group.errors %}
+          <span class="text-red-600 text-sm">{{ err }}</span>
+        {% endfor %}
+      </div>
+    {% endmacro %}
+
+    {{ radio_group(form.attending_engagement) }}
+    {{ radio_group(form.attending_pre_wedding) }}
+    {{ radio_group(form.attending_wedding) }}
+
+    <!-- submit -->
+    {{ form.submit(
+         class="bg-brandLight text-white px-8 py-3 rounded
+                font-garamond tracking-extraWide
+                hover:opacity-90 transition"
+    ) }}
+  </form>
+</section>
+{% endblock %}

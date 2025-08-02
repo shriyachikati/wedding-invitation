@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="text-center max-w-3xl mx-auto">
+  <h1 style="font-size:50px; font-family:leJourScript; color:#d6ae72; margin:auto;">Thank You!</h1>
+</section>
+
+<section class="text-center max-w-2xl mx-auto justify-center">
+  {% if rsvp.attending_engagement: %}
+    <p style="font-family: Garamond, serif; font-size:20px; letter-spacing:0.22rem; color:#b48b58">WE CAN'T WAIT TO CELEBRATE WITH YOU ON 12 OCTOBER 2025! 🎉</p>
+  {% elif rsvp.attending_wedding: %}
+    <p class="text-xl">WE CAN'T WAIT TO CELEBRATE WITH YOU ON 12 NOVEMBER 2025! 🎉</p>
+  {% elif rsvp.attending_wedding: %}
+    <p class="text-xl">WE CAN'T WAIT TO CELEBRATE WITH YOU ON 13 NOVEMBER 2025! 🎉</p>
+  {% else %}
+    <p class="text-xl">WE’LL MISS YOU, BUT APPRECIATE YOU LETTING US KNOW. ❤️</p>
+  {% endif %}
+
+  <a href="{{ url_for('index') }}"
+     class="inline-block text-gray-600 hover:underline" style="font-family: Garamond, serif; font-size:15px; font-style:italic; color:#765830">Click here to go back Home</a>
+</section>
+{% endblock %}

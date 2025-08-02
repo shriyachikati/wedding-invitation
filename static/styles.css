@@ -1,0 +1,23 @@
+@font-face {
+  font-family: leJourScript;
+  src: url(fonts/le-jour-script.otf);
+}
+
+div {
+  font-family: leJourScript;
+}
+
+@font-face {
+  font-family: texGyrePagella;
+  src: url(fonts/tex-gyre-pagella.regular.otf);
+}
+
+div {
+  font-family: texGyrePagella;
+}
+
+.radio-cursive {
+  font-family: Garamond, serif;
+  font-style: italic;
+  letter-spacing:0rem;
+}
