@@ -27,9 +27,9 @@
           <td class="py-2 px-3">{{ r.first_name }}</td>
           <td class="py-2 px-3">{{ r.last_name }}</td>
 
-          <td class="py-2">{{ "✔️" if r.attending_engagement   else "—" }}</td>
-          <td class="py-2">{{ "✔️" if r.attending_pre_wedding  else "—" }}</td>
-          <td class="py-2">{{ "✔️" if r.attending_wedding  else "—" }}</td>
+          <td class="py-2">{{ r.engagement_count }}</td>
+          <td class="py-2">{{ r.prewedding_count }}</td>
+          <td class="py-2">{{ r.wedding_count }}</td>
 
           <td class="py-2 text-sm">
             {{ r.submitted_at.strftime("%Y-%m-%d %H:%M") }}
@@ -44,9 +44,9 @@
   <tfoot class="bg-[#765830] text-white">
     <tr>
       <td class="py-3 px-3" colspan="2">Total</td>
-      <td class="py-3">{{ totals.attending_engagement   }}</td>
-      <td class="py-3">{{ totals.attending_pre_wedding }}</td>
-      <td class="py-3">{{ totals.attending_wedding }}</td>
+      <td class="py-3">{{ totals.engagement_count }}</td>
+      <td class="py-3">{{ totals.prewedding_count }}</td>
+      <td class="py-3">{{ totals.wedding_count }}</td>
       <td></td>
     </tr>
   </tfoot>

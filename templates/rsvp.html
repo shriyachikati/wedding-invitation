@@ -53,6 +53,38 @@
       </div>
     {% endmacro %}
 
+    {% macro counter_input(field, field_id, label_html) %}
+    <div>
+      <label class="block mb-3 radio-cursive text-lg text-brandDark">{{ label_html | safe }}</label>
+      <div class="flex items-center gap-4">
+        <button type="button"
+                onclick="decrement('{{ field_id }}')"
+                class="px-3 py-1 rounded bg-brandLight text-white hover:opacity-90">−</button>
+
+        {{ field(
+              id=field_id,
+              class="w-16 text-center p-2 border border-brand rounded font-garamond",
+              type="number",
+              min="0",
+              max="10",
+              step="1",
+              value=field.data or 0,
+              oninput="sanitizeInput(this)"
+        ) }}
+
+        <button type="button"
+                onclick="increment('{{ field_id }}')"
+                class="px-3 py-1 rounded bg-brandLight text-white hover:opacity-90">+</button>
+      </div>
+      {% for err in field.errors %}
+        <span class="text-red-600 text-sm">{{ err }}</span>
+      {% endfor %}
+    </div>
+  {% endmacro %}
+
+
+
+
     {{ text_field(form.first_name) }}
     {{ text_field(form.last_name) }}
 
@@ -81,9 +113,10 @@
       </div>
     {% endmacro %}
 
-    {{ radio_group(form.attending_engagement) }}
-    {{ radio_group(form.attending_pre_wedding) }}
-    {{ radio_group(form.attending_wedding) }}
+    {{ counter_input(form.engagement_count, 'engagement_count', 'Please enter how many of you will be attending our <strong>engagement</strong>.') }}
+    {{ counter_input(form.prewedding_count, 'prewedding_count', 'Please enter how many of you will be joining us for the <strong>pre-wedding</strong>.') }}
+    {{ counter_input(form.wedding_count, 'wedding_count', 'Please enter how many of you will be there at our <strong>wedding</strong>.') }}
+
 
     <!-- submit -->
     {{ form.submit(
@@ -93,4 +126,31 @@
     ) }}
   </form>
 </section>
+<script>
+  function increment(id) {
+    const input = document.getElementById(id);
+    let value = parseInt(input.value) || 0;
+    input.value = Math.min(10, value + 1);
+  }
+
+  function decrement(id) {
+    const input = document.getElementById(id);
+    let value = parseInt(input.value) || 0;
+    input.value = Math.max(0, value - 1);
+  }
+
+  function sanitizeInput(input) {
+    let value = parseInt(input.value);
+    if (isNaN(value) || value < 0) {
+      input.value = 0;
+    } else if (value > 10) {
+      input.value = 10;
+    } else {
+      input.value = value;
+    }
+  }
+</script>
+
+
+
 {% endblock %}

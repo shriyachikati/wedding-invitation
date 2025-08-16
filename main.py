@@ -1,15 +1,17 @@
 from flask import Flask, render_template
 from flask_wtf import FlaskForm
 from wtforms import StringField, RadioField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.fields.numeric import IntegerField
+from wtforms.validators import DataRequired, NumberRange, InputRequired
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Integer, String, Boolean
+from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import func, case
+from sqlalchemy import func
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+from pytz import timezone
 
 load_dotenv()
 
@@ -28,34 +30,38 @@ class RSVP(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     first_name: Mapped[str] = mapped_column(String(250), nullable=False)
     last_name: Mapped[str] = mapped_column(String(250), nullable=False)
-    attending_engagement: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    attending_pre_wedding: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    attending_wedding: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    engagement_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    prewedding_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    wedding_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    submitted_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone('Asia/Kolkata')))
 
 with app.app_context():
     db.create_all()
+
+
+
 
 # ---------- Forms ----------
 class RSVPForm(FlaskForm):
     first_name = StringField("FIRST NAME", validators=[DataRequired()])
     last_name  = StringField("LAST NAME",  validators=[DataRequired()])
-    attending_engagement = RadioField(
-        "Will you be attending our engagement?",
-        choices=[("yes", "Yes!"), ("no", "No, sorry.")],
-        validators=[DataRequired()]
+    engagement_count = IntegerField(
+        "Will you be attending our engagement? Please enter how many of you are attending the engagement",
+        default=0,
+        validators=[InputRequired(), NumberRange(min=0, max=10)]
     )
-    attending_pre_wedding = RadioField(
-        "Will you join us for the pre-wedding?",
-        choices=[("yes", "Yes!"), ("no", "No, sorry.")],
-        validators=[DataRequired()]
+    prewedding_count = IntegerField(
+        "Will you join us for the pre-wedding? Please enter how many of you will join us for the pre-wedding",
+        default=0,
+        validators=[InputRequired(), NumberRange(min=0, max=10)]
     )
-    attending_wedding  = RadioField(
-        "Will you be there at our wedding?",
-        choices=[("yes", "Yes!"), ("no", "No, sorry.")],
-        validators=[DataRequired()]
+    wedding_count  = IntegerField(
+        "Will you be there at our wedding? Please enter how many of you will be there at out wedding",
+        default=0,
+        validators=[InputRequired(), NumberRange(min=0, max=10)]
     )
     submit = SubmitField("Submit RSVP")
+
 
 # ---------- Routes ----------
 @app.route("/")
@@ -78,9 +84,9 @@ def rsvp():
         rsvp = RSVP(
             first_name=form.first_name.data.strip().title(),
             last_name=form.last_name.data.strip().title(),
-            attending_engagement=(form.attending_engagement.data == "yes"),
-            attending_pre_wedding=(form.attending_pre_wedding.data == "yes"),
-            attending_wedding=(form.attending_wedding.data == "yes")
+            engagement_count=(form.engagement_count.data),
+            prewedding_count=(form.prewedding_count.data),
+            wedding_count=(form.wedding_count.data)
         )
         db.session.add(rsvp)
         db.session.commit()
@@ -92,14 +98,15 @@ def rsvp():
 def admin_rsvps():
     """Show every RSVP in a plain table (GET only)."""
     rows = RSVP.query.order_by(RSVP.submitted_at.desc()).all()
+
     totals = (
         db.session.query(
-            func.count(case((RSVP.attending_engagement, 1))).label("attending_engagement"),
-            func.count(case((RSVP.attending_pre_wedding, 1))).label("attending_pre_wedding"),
-            func.count(case((RSVP.attending_wedding, 1))).label("attending_wedding"),
-        )
-        .one()
+            func.sum(RSVP.engagement_count).label("engagement_count"),
+            func.sum(RSVP.prewedding_count).label("prewedding_count"),
+            func.sum(RSVP.wedding_count).label("wedding_count"),
+        ).one()
     )
+
     return render_template("admin_rsvps.html", rows=rows, totals=totals)
 
 
