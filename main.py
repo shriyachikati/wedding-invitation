@@ -10,6 +10,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import func
 from datetime import datetime
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from pytz import timezone
 
@@ -20,7 +21,10 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 
-app = Flask(__name__)
+HERE = Path(__file__).resolve().parent
+ROOT = HERE  # repo root where templates/ and static/ live
+
+app = Flask(__name__, template_folder=str(ROOT / "templates"), static_folder=str(ROOT / "static"))
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 db.init_app(app)
